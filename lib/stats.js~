@@ -5,7 +5,7 @@
  */
 
 var sys = require('sys');
-
+var events = require('events');
 var stats = exports;
 
 /**
@@ -74,13 +74,12 @@ stats.Rater.prototype = {
      */
     addRating : function(identifier, rating)
     {	
-	var currentRateables = [];
-   	if(this.identifierExists(identifier))
+   	if(!this.identifierExists(identifier))
    	{
-	    currentRateables = this.rateables[identifier];
+	    this.rateables[identifier] = [];
    	}
-	currentRateables.push(rating)
-	this.rateables[identifier] = currentRateables;
+	this.rateables[identifier].push(rating);
+	sys.puts(this.rateables[identifier]);
     },
     
     /**
@@ -88,9 +87,48 @@ stats.Rater.prototype = {
      */
     value : function(identifier) 
     {
+	var sum = 0;
 	var ratings = this.rateables[identifier];
-	sys.puts(ratings.sum());
-	return (ratings.sum()/ratings.length);
+	for(var i = 0; i < ratings.length; i++)
+	{
+	    sys.puts("rating: " + ratings[i]);
+	    sum = sum + parseInt(ratings[i]);
+	}
+	sys.puts("sum: " + sum);
+	sys.puts("length: " + ratings.length);
+	return (sum/ratings.length);
     }
 
 };
+
+stats.Statistics = function() {
+    events.EventEmitter.call(this);
+    this.counters = {};
+    this.raters = {};
+};
+
+stats.Statistics.prototype = {
+
+    handleCount : function(type, identifiers) {
+	
+	if(!this.counters.hasOwnProperty(type)) {
+	    this.counters[type] = new stats.Counter();
+	}
+
+	for(identifier in identifiers) {
+	    this.counters[type].increment(identifier);
+	}
+	
+    },
+
+    handleRating : function(type, identifier, rating) {
+
+	if(!this.raters.hasOwnProperty(type)) {
+	    this.raters[type] = new stats.Rater();
+	}
+	
+	this.raters[type].addRating(identifier, rating);
+    }
+
+};
+sys.inherits(stats.Statistics, events.EventEmitter); 
