@@ -25,10 +25,10 @@ statistics.addListener('event',handler.handleEvent);
 var collecta = new collecta.Collecta(
 				     {query: 'convergese', 
 				      apikey: null,
-				      jid: 'guest.collecta.com'
+				      jid: 'guest.collecta.com',
+				      emitter: handler
 				     });
 collecta.addListener('count', statistics.handleCount);
-collecta.addListener('rating', statistics.handleRating);
 
 var twitter  = null;
 
