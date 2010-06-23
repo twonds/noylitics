@@ -8,11 +8,14 @@ var events = require('events');
 
 function handleCount(count) {
   sys.puts('Count called');
-  sys.puts(count);
+  sys.puts(sys.inspect(count, false, null));
+
 }
 
 function handleRating(rating) {  
-  sys.puts(rating);
+  sys.puts('Rating called');
+  sys.puts(sys.inspect(rating, false, null));
+
 }
 
 
