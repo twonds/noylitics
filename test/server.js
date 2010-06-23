@@ -56,25 +56,39 @@ var server = http.createServer(function(req, res) {
 	  sys.puts(code);
 	  sys.puts(msg);
 	  res.sendHeader(code, {'Content-Type': 'text/plain'});
-	  res.write(msg);
+	  res.write(msg, "utf8");
 	  res.close();
 	})
       .otherwise(function() {
 	  req_path = req.url.split('?');
-	  if (req_path[0] == "/counts") 
-	  {
-	      statistics.addListener('event', function(eventType, type, identifier, value) {
+	  if (req_path[0] == "/counts") {
+	      
+	      statistics.addListener('links', function(eventType, type, identifier, value) {
 		  res.sendHeader(200, { "Content-Type" : "text/plain" });
-		  sys.puts("sending: " + type + " : " + identifier + " : " + value);
-		  res.write(type + " : " + identifier + " : " + value);
+		  
+		  sys.puts("streaming: " + JSON.stringify([type, identifier, value]));
+		  res.write(JSON.stringify([type, identifier, value]), "utf8");
+		  sys.puts("streamed: " + JSON.stringify([type, identifier, value]));
+		  
 		  res.close();
 	      });
+	      
+	      statistics.addListener('author', function(eventType, type, identifier, value) {
+		  res.sendHeader(200, { "Content-Type" : "text/plain" });
+		  
+		  sys.puts("streaming: " + JSON.stringify([type, identifier, value]));
+		  res.write(JSON.stringify([type, identifier, value]), "utf8");
+		  sys.puts("streamed: " + JSON.stringify([type, identifier, value]));
+		  
+		  res.close();  
+	      });
+	      
+	      
 	  }
-	  else
-	  {
-	  res.sendHeader(404, {'Content-Type': 'text/plain'});
-	  res.write('Sorry, no paper this morning!');
-	  res.close();
+	  else {
+	      res.sendHeader(404, {'Content-Type': 'text/plain'});
+	      res.write('Sorry, no paper this morning!');
+	      res.close();
 	  }
       });
   });

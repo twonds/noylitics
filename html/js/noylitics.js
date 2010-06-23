@@ -16,18 +16,16 @@ function waitForMsg(){
   $.ajax({
     type: "GET",
 	url: "/counts",
-	
 	async: true, /* If set to non-async, browser shows page as "Loading.."*/
 	cache: false,
 	timeout:50000, /* Timeout in ms */
-	
 	success: function(data){ 
-	handleEvent("new", data); 
-	setTimeout(
-	    'waitForMsg()', /* Request next message */
-	    1000 /* ..after 1 seconds */
-	);
-      },
+	    handleEvent("new", data); 
+	    setTimeout(
+		'waitForMsg()', /* Request next message */
+		1000 /* ..after 1 seconds */
+	    );
+	},
       error: function(XMLHttpRequest, textStatus, errorThrown){
 	  handleEvent("error", textStatus + " (" + errorThrown + ")");
 	  setTimeout('waitForMsg()', /* Try again after.. */
