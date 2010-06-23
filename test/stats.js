@@ -18,18 +18,21 @@ rater.addRating('sam', 2);
 sys.puts("rater.value: " + rater.value('sam'));
 
 var s = new stats.Statistics();
-var stat_emit = new events.EventEmitter();
+var collector_emit = new events.EventEmitter();
 
 handleCounts = stats.createBoundedWrapper(s, s.handleCount);
 handleRatings = stats.createBoundedWrapper(s, s.handleRating);
 
-stat_emit.addListener('count', handleCounts);
-stat_emit.addListener('rate', handleRatings);
+collector_emit.addListener('count', handleCounts);
+collector_emit.addListener('rate', handleRatings);
 
-stat_emit.emit('count', 'url', ['http://test.com', 'http://google.com']);
-stat_emit.emit('count', 'url', ['http://test.com', 'http://google.com']);
+collector_emit.emit('count', 'url', ['http://test.com', 'http://google.com']);
+collector_emit.emit('count', 'url', ['http://test.com', 'http://google.com']);
 
-stat_emit.emit('rate', 'movie', 'Toy Story 3', 3);
-stat_emit.emit('rate', 'movie', 'Toy Story 3', 5);
+collector_emit.emit('rate', 'movie', 'Toy Story 3', 3);
+collector_emit.emit('rate', 'movie', 'Toy Story 3', 5);
+
+s.squeak();
 
 sys.puts(sys.inspect(s, true, null));
+sys.puts(sys.inspect(rater, true, null));
