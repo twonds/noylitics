@@ -3,6 +3,7 @@ var path         = require('path');
 var events       = require('events');
 var TwitterNode = require('../deps/twitter-node/lib').TwitterNode;
 var TwitterCollector  = require('../lib/twitter').TwitterCollector;
+var utils = require('../lib/utils');
 
 //var twitter = new TwitterNode({
 //    user: 'noylitics', 
@@ -14,10 +15,14 @@ var TwitterCollector  = require('../lib/twitter').TwitterCollector;
 //   sys.puts("@" + tweet.user.screen_name + ": " + tweet.text);
 //}).stream();
 
+sys.puts( sys.inspect(utils.urlMatch("http://www.yahoo.com http://www.google.com") ));
+
 var twitCollect = new TwitterCollector();
 sys.puts(sys.inspect(twitCollect));
-twitCollect.addListener("count", function(type, authors) {
-    sys.puts(authors);
+twitCollect.addListener("count", function(type, values) {
+    sys.puts(type);
+    sys.puts(values);
+    sys.puts("---------------");
 });
 
-twitCollect.run();
+//twitCollect.run();
