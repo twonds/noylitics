@@ -18,6 +18,10 @@ rater.addRating('sam', 2);
 sys.puts("rater.value: " + rater.value('sam'));
 
 var s = new stats.Statistics();
+s.addListener('event', function(type, identifier, value) {
+    sys.puts(type + " : " + identifier + " : " + value);
+});
+
 var collector_emit = new events.EventEmitter();
 
 handleCounts = stats.createBoundedWrapper(s, s.handleCount);
@@ -32,7 +36,6 @@ collector_emit.emit('count', 'url', ['http://test.com', 'http://google.com']);
 collector_emit.emit('rate', 'movie', 'Toy Story 3', 3);
 collector_emit.emit('rate', 'movie', 'Toy Story 3', 5);
 
-s.squeak();
 
 sys.puts(sys.inspect(s, true, null));
 sys.puts(sys.inspect(rater, true, null));
