@@ -15,7 +15,7 @@ var utils = require('../lib/utils');
 //   sys.puts("@" + tweet.user.screen_name + ": " + tweet.text);
 //}).stream();
 
-sys.puts( sys.inspect(utils.urlMatch("http://www.yahoo.com http://www.google.com") ));
+sys.puts( sys.inspect(utils.urlMatch("http://yahoo.com http://google.com") ));
 
 var twitCollect = new TwitterCollector();
 sys.puts(sys.inspect(twitCollect));
@@ -25,4 +25,4 @@ twitCollect.addListener("count", function(type, values) {
     sys.puts("---------------");
 });
 
-//twitCollect.run();
+twitCollect.run();
