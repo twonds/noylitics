@@ -28,28 +28,37 @@ function Counts(type) {
 }
 
 var authorCounts = new Counts();
+var urlCounts = new Counts();
 
 function log(msg) {
     $('#log').append('<div></div>').append(document.createTextNode(msg));
 }
 
 function buildRankings(data) {
-    $('#displayRanking').empty();
+    $('#displayAuthorRanking').empty();
+    $('#displayURLRanking').empty();
 
+    //author
     for(var key in data.author) {
 	authorCounts.add(key, data.author[key]);
     }
     
-    var sortedByCount = authorCounts.sortedByCount();
-    for(var i = 0; i < sortedByCount.length; i++) {
-	$('#displayRanking').append('<div></div>').append(document.createTextNode(sortedByCount[i].key + " - " + sortedByCount[i].count));
+    var authorByCount = authorCounts.sortedByCount();
+    for(var i = 0; i < authorByCount.length; i++) {
+	var rankingText = authorByCount[i].key + " - " + authorByCount[i].count;
+	$('#displayAuthorRanking').append('<div class="rank">' + rankingText + '</div>');
     } 
-}
 
-function buildList(data) {
-    for(var key in data.author) {
-	$('#display1').append('<div></div>').append(document.createTextNode(key + " - " + data.author[key]));
+    //urls
+    for(var key in data.url) {
+	urlCounts.add(key, data.url[key]);
     }
+    
+    var urlByCount = urlCounts.sortedByCount();
+    for(var i = 0; i < urlByCount.length; i++) {
+	var rankingText = urlByCount[i].key + " - " + urlByCount[i].count;
+	$('#displayURLRanking').append('<div class="rank">' + rankingText + '</div>');
+    } 
 }
 
 function handleEvent(event, data) {
@@ -79,6 +88,7 @@ function waitForMsg(){
 		     "15000"); /* milliseconds (15seconds) */
       },
   });
+
 };
 
 

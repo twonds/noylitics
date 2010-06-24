@@ -1,19 +1,27 @@
 <html>
 <head>
 <title> Noylitics </title>
-
 <script type='text/javascript'
 	src='http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js'></script>
-
 <script type='text/javascript'
         src='js/noylitics.js'></script>
-
+<style>
+.rank
+{
+border:solid 1px red;
+padding:1px;
+margin:1px;
+background:LightGrey;
+}
+</style>
 </head>
-<body>
-<div id='displayRanking'>
 
+<body>
+<div>
+<div id='displayAuthorRanking' style="float:left;"></div>
+<div id='displayURLRanking' style="float:right;"></div>
 </div>
-  <hr />
-  <div id='log'></div>
+<hr />
+<div id='log'></div>
 </body>
 </html>

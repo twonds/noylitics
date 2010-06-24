@@ -8,3 +8,5 @@ var count = {
 for(var s in count) {
     sys.puts(s);
 }
+
+sys.puts("hello rate".indexOf("rate"));
