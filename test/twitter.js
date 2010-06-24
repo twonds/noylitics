@@ -19,9 +19,8 @@ sys.puts( sys.inspect(utils.urlMatch("http://yahoo.com http://google.com") ));
 
 var twitCollect = new TwitterCollector();
 sys.puts(sys.inspect(twitCollect));
-twitCollect.addListener("count", function(type, values) {
-    sys.puts(type);
-    sys.puts(values);
+twitCollect.addListener("count", function(count) {
+    sys.puts(sys.inspect(count));
     sys.puts("---------------");
 });
 
