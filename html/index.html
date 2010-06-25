@@ -6,22 +6,39 @@
 <script type='text/javascript'
         src='js/noylitics.js'></script>
 <style>
-.rank
+body
 {
-border:solid 1px red;
+background: #bcd0e4 url("widget-table-bg.jpg") top left repeat-x;
+}
+.tweet
+{
 padding:1px;
 margin:1px;
-background:LightGrey;
+font-family: sans-serif, Arial; 
+font-weight: normal;
+font-size:  12px;
+color: lightslategrey;
+
+}
+.rank
+{
+#border:solid thick lightgrey;
+padding:1px;
+margin:1px;
+font-family:sans-serif, Arial; 
+font-weight: bold;
+font-size: 14px;
+color: slategray;
 }
 </style>
 </head>
 
 <body>
 <div>
-<div id='displayAuthorRanking' style="float:left;"></div>
-<div id='displayURLRanking' style="float:right;"></div>
+<div id='displayAuthorRanking' style="float:left;width:33%"></div>
+<div id='displayURLRanking' style="float:left;width:33%"></div>
+<div id='displayTweets' style="float:right;width:33%"></div>
 </div>
-<hr />
-<div id='log'></div>
+
 </body>
 </html>

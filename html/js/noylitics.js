@@ -45,7 +45,7 @@ function buildRankings(data) {
     
     var authorByCount = authorCounts.sortedByCount();
     for(var i = 0; i < authorByCount.length; i++) {
-	var rankingText = authorByCount[i].key + " - " + authorByCount[i].count;
+	var rankingText = '<span style="width:25%;color:black">' + authorByCount[i].count + "&nbsp;</span><span style='font-size:12px'>" +  authorByCount[i].key + "</span>";
 	$('#displayAuthorRanking').append('<div class="rank">' + rankingText + '</div>');
     } 
 
@@ -56,13 +56,17 @@ function buildRankings(data) {
     
     var urlByCount = urlCounts.sortedByCount();
     for(var i = 0; i < urlByCount.length; i++) {
-	var rankingText = urlByCount[i].key + " - " + urlByCount[i].count;
+	var rankingText = '<span style="width:25%;color:black">' + urlByCount[i].count + "&nbsp;</span><span style='font-size:12px'><a target='new' href='" +  urlByCount[i].key + "'>" + urlByCount[i].key + "</a></span>";
 	$('#displayURLRanking').append('<div class="rank">' + rankingText + '</div>');
     } 
 }
 
 function handleEvent(event, data) {
     buildRankings(data);
+}
+
+function handleTweet(event, data) {
+    $('#displayTweets').prepend('<div class="tweet">' + data.user + " - " + data.tweet + '</div>');
 }
 
 function waitForMsg(){
@@ -92,10 +96,38 @@ function waitForMsg(){
 };
 
 
+function waitForTweet(){
+  /* This requests the event url for statistics events.
+     When it complete (or errors)*/
+  $.ajax({
+      type: "GET",
+      url: "/tweets",
+      dataType: 'json',
+      async: true, /* If set to non-async, browser shows page as "Loading.."*/
+      cache: false,
+      timeout:50000, /* Timeout in ms */
+      success: function(data){ 
+	  handleTweet("new", data); 
+	  setTimeout(
+	      'waitForTweet()', /* Request next message */
+	      1000 /* ..after 1 seconds */
+	  );
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown){
+	  handleEvent("error", textStatus + " (" + errorThrown + ")");
+	  setTimeout('waitForTweet()', /* Try again after.. */
+		     "15000"); /* milliseconds (15seconds) */
+      },
+  });
+
+};
+
+
+
 $(document).ready(function () {
     log("Starting up....");
     
     waitForMsg();
-    
+    waitForTweet();
     
   });
