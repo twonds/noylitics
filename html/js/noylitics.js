@@ -69,6 +69,12 @@ function handleTweet(event, data) {
     $('#displayTweets').prepend('<div class="tweet">' + data.user + " - " + data.tweet + '</div>');
 }
 
+function handleRating(event, data) {
+    if(data.hasOwnProperty('identifier')) {
+	$('#displayRatings').prepend('<div class="rating">' + data.identifier + " - " + data.value + '</div>');
+    }
+}
+
 function waitForMsg(){
   /* This requests the event url for statistics events.
      When it complete (or errors)*/
@@ -95,6 +101,30 @@ function waitForMsg(){
 
 };
 
+function waitForRating(){
+  /* This requests the event url for statistics events.
+     When it complete (or errors)*/
+  $.ajax({
+      type: "GET",
+      url: "/ratings",
+      dataType: 'json',
+      async: true, /* If set to non-async, browser shows page as "Loading.."*/
+      cache: false,
+      timeout:50000, /* Timeout in ms */
+      success: function(data){ 
+	  handleRating("new", data); 
+	  setTimeout(
+	      'waitForRating()', /* Request next message */
+	      1000 /* ..after 1 seconds */
+	  );
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown){
+	  handleRating("error", textStatus + " (" + errorThrown + ")");
+	  setTimeout('waitForRating()', /* Try again after.. */
+		     "15000"); /* milliseconds (15seconds) */
+      },
+  });
+};
 
 function waitForTweet(){
   /* This requests the event url for statistics events.
@@ -129,5 +159,6 @@ $(document).ready(function () {
     
     waitForMsg();
     waitForTweet();
+    waitForRating();
     
   });
